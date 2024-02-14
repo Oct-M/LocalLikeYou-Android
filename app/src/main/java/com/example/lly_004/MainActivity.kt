@@ -1,9 +1,7 @@
 package com.example.lly_004
 
 //Default Imports
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,17 +14,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.lly_004.ui.theme.LLY_004Theme
 
 /*Added Imports*/
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.MapInitOptions
-import com.mapbox.maps.Style
 import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
-import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+
 
 
 class MainActivity : ComponentActivity() {
