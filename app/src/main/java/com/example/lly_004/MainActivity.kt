@@ -20,8 +20,6 @@ import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.CameraOptions
 
-
-
 class MainActivity : ComponentActivity() {
     @OptIn(MapboxExperimental::class)
     override fun onCreate(savedInstanceState: Bundle?) {
