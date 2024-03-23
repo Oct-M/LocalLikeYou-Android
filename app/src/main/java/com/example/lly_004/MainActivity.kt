@@ -33,15 +33,15 @@ import android.provider.Settings
 import com.google.android.gms.location.LocationServices
 
 class MainActivity : ComponentActivity() {
-    //Defined variables for the LLY main activity class
-    private var fusedLocationProvider: FusedLocationProviderClient? = null
-    private var locationRequest: LocationRequest = LocationRequest.create().apply {
+    //Variables used for permission handling
+    private var fusedLocationProvider: FusedLocationProviderClient? = null //fusedLocationProvider used to communicate with App Store Api to get user location
+    private var locationRequest: LocationRequest = LocationRequest.create().apply { //locationRequest
         interval = 20
         fastestInterval = 10
         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         maxWaitTime = 60
     }
-    private var locationCallback: LocationCallback = object : LocationCallback() {
+    private var locationCallback: LocationCallback = object : LocationCallback() { //Store result from location request
         override fun onLocationResult(locationResult: LocationResult){
             val locationList = locationResult.locations
             if(locationList.isNotEmpty()){
@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    //onCreate initializes the main activity for the Local Like You app
     @OptIn(MapboxExperimental::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //
+    //Resume the main activity after an interrupt. Checks if permission is granted before requesting user location updates
     override fun onResume(){
         super.onResume()
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -98,7 +99,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //
+    //called when the activity is not in the foreground of the users device. Method will stop location updates while in the background
     override fun onPause(){
         super.onPause()
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED){
@@ -106,7 +107,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //
+    //After getting results from permission request, method checks if permission was granted. If so, method performs tasks that require permission.
+    //If not, checks if user has clicked do not ask again before doing one more request
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -145,12 +147,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    //objects used to request location permissions
     companion object {
         private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
         private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
     }
 
-    //
+    //This function checks permissions and requests them if needed
     private fun checkLocationPermission(){
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -176,14 +179,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    //
+    //checks background location permission status
     private fun checkBackgroundLocation(){
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestBackgroundLocationPermission()
         }
     }
 
-    //
+    //This function checks coarse location permission status
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this,
@@ -192,7 +195,7 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    //
+    //This function requests background location permissions
     private fun requestBackgroundLocationPermission(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             ActivityCompat.requestPermissions(
